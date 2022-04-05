@@ -50,7 +50,7 @@ int main() {
     int ypos = 85;
     int vx = 0;
     int vy = 0;
-    int radius = 35;
+    int radius = 15;
     sf::CircleShape player(radius);
     player.setFillColor(sf::Color(250, 250, 0)); //using RGB value for color here (hex also works)
     player.setPosition(xpos, ypos); //top left "corner" of circle (not center!)
