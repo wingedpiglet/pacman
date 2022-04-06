@@ -4,9 +4,10 @@
 
 #include<iostream>
 #include "SFML/Graphics.hpp"
+#include"globals.h"
+#include"ghost.h"
 using namespace std;
 
-enum DIRECTIONS { LEFT, RIGHT, UP, DOWN }; //left is 0, right is 1, up is 2, down is 3
 
 int main() {
     //game set up (you'll need these lines in every game)
@@ -26,7 +27,7 @@ int main() {
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
         1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,1,
         1,2,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,
-        1,2,1,2,2,2,2,1,2,1,2,1,2,1,2,2,2,1,2,1,
+        1,2,2,2,2,2,2,1,2,1,2,1,2,1,2,2,2,1,2,1,
         1,2,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,
         1,2,1,2,2,2,2,1,2,2,2,2,2,2,2,1,2,1,2,1,
         1,2,1,2,1,1,1,2,2,2,2,2,2,1,2,2,2,1,2,1,
@@ -38,8 +39,8 @@ int main() {
         1,2,1,2,1,2,2,1,2,2,1,2,2,2,2,1,2,2,2,1,
         1,2,1,2,1,1,2,1,1,2,1,2,1,1,2,1,1,1,2,1,
         1,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,1,2,1,
-        1,2,1,2,1,2,1,1,2,1,1,1,1,2,1,2,2,2,1,1,
-        1,2,1,2,1,2,2,1,2,1,2,2,1,2,1,1,1,2,2,1,
+        1,2,1,2,1,2,1,1,2,1,1,1,1,2,1,2,2,2,2,1,
+        1,2,1,2,1,2,2,1,2,2,2,2,1,2,1,1,1,2,2,1,
         1,2,1,2,1,2,2,2,1,1,1,2,1,2,2,1,2,1,2,1,
         1,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,1,2,1,
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
@@ -56,12 +57,23 @@ int main() {
     player.setPosition(xpos, ypos); //top left "corner" of circle (not center!)
     bool keys[] = { false, false, false, false };
 
+    ghost Blinky;
+    Blinky.initGhost(75, 75, 1, 0, 1, 0);
+    ghost Blinky2;
+    Blinky2.initGhost(400, 400, 1, 1, 1, 0);
+    ghost Blinky3;
+    Blinky3.initGhost(300, 300, 1, 0, 1, 0);
+    ghost Blinky4;
+    Blinky4.initGhost(500, 300, 1, 0, 1, 0);
+
+
     sf::CircleShape dot(5);
     dot.setFillColor(sf::Color(250, 250, 250)); //using RGB value for color here (hex also works)
+    dot.setPosition(0,0);
 
     sf::Texture pacman;
     pacman.loadFromFile("pac.png");
-    sf::IntRect pac(0, 0, 62, 62);
+    sf::IntRect pac(0, 0, 50, 50);
     sf::Sprite playerImg(pacman, pac);
 
     int ticker = 0;
@@ -150,6 +162,10 @@ int main() {
 
         player.setPosition(xpos, ypos);
 
+        Blinky.chase1(xpos, ypos, map);
+        Blinky2.chase1(xpos, ypos, map);
+        Blinky3.chase1(xpos, ypos, map);
+        Blinky4.chase1(xpos, ypos, map);
 
         //render section-----------------------------------------
         screen.clear(); //wipes screen, without this things smear
@@ -167,6 +183,10 @@ int main() {
                 }
             }
         screen.draw(playerImg); //draw player
+        Blinky.drawGhost(screen);
+        Blinky2.drawGhost(screen);
+        Blinky3.drawGhost(screen);
+        Blinky4.drawGhost(screen);
         screen.display(); //flips memory drawings onto screen
 
     }//######################## end game loop ###################################################################################
